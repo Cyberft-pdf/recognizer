@@ -23,12 +23,8 @@ while True:
 
 
         face = frame[y:y+h, x:x+w]
-
-
         face = cv2.resize(face, (200, 200))
-
         face = face / 255.0
-
         face = np.expand_dims(face, axis=0)
 
         predictions = model.predict(face)
