@@ -2,7 +2,7 @@ import tensorflow as tf
 import cv2
 import numpy as np
 
-model = tf.keras.models.load_model("model2.h5")  
+model_gender = tf.keras.models.load_model("model2.h5")  
 
 cap = cv2.VideoCapture(0)
 
@@ -17,17 +17,18 @@ while True:
         cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
 
         face = frame[y:y+h, x:x+w]
-
         face = cv2.resize(face, (200, 200))
-
         face = face / 255.0
-
         face = np.expand_dims(face, axis=0)
 
-        predictions = model.predict(face)
+
+
+        predictions = model_gender.predict(face)
 
         gender_label = np.argmax(predictions, axis=0 )[0]
 
+
+        #díky tomuto to funguje 
         female_probability = predictions[0][0]
 
         if female_probability > 0.5:
