@@ -3,6 +3,8 @@ import cv2
 import numpy as np
 
 model_gender = tf.keras.models.load_model("model2.h5")  
+model_age =tf.keras.models.load_model("model3.h5")
+
 
 cap = cv2.VideoCapture(0)
 
@@ -23,21 +25,29 @@ while True:
 
 
 
-        predictions = model_gender.predict(face)
+        predictions_gender = model_gender.predict(face)
+        predictions_age = model_age.predict(face)
 
-        gender_label = np.argmax(predictions, axis=0 )[0]
+        gender_label = np.argmax(predictions_gender, axis=0 )[0]
 
 
         #díky tomuto to funguje 
-        female_probability = predictions[0][0]
+        female_probability = predictions_gender[0][0]
+        old_probability = predictions_age[0][0]
 
         if female_probability > 0.5:
-            gender = "zena"
+            gender = "Female"
         else:
-            gender = "Muz"
+            gender = "Male"
+
+        if old_probability > 0.5:
+            age = "Mlada"
+        else:
+            age = "Stara"        
 
 
-        cv2.putText(frame, f'Pohlaví: {gender}', (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+        cv2.putText(frame, f'Gender: {gender}', (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+        cv2.putText(frame, f"Age: {age}", (x, y-30), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
 
     cv2.imshow('Live Detekce a Rozpoznávání Pohlaví', frame)
 
