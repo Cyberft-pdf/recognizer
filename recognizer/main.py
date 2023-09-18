@@ -41,9 +41,9 @@ while True:
             gender = "Male"
 
         if old_probability > 0.5:
-            age = "Mlada"
+            age = "Young"
         else:
-            age = "Stara"        
+            age = "Old"        
 
 
         cv2.putText(frame, f'Gender: {gender}', (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
