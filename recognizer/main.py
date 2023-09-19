@@ -9,6 +9,7 @@ model_age =tf.keras.models.load_model("model3.h5")
 cap = cv2.VideoCapture(0)
 
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
+eye_cascade = CascadeClassifier(cv2.data.haarcascades + 'haarcascade_eye_default.xml')
 
 while True:
     ret, frame = cap.read()  
