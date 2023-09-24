@@ -1,6 +1,7 @@
 import tensorflow as tf
 import cv2
 import numpy as np
+import datetime
 
 model_gender = tf.keras.models.load_model("model2.h5")  
 model_age =tf.keras.models.load_model("model3.h5")
@@ -9,7 +10,7 @@ model_age =tf.keras.models.load_model("model3.h5")
 cap = cv2.VideoCapture(0)
 
 face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + 'haarcascade_frontalface_default.xml')
-eye_cascade = CascadeClassifier(cv2.data.haarcascades + 'haarcascade_eye_default.xml')
+
 
 while True:
     ret, frame = cap.read()  
@@ -38,13 +39,26 @@ while True:
 
         if female_probability > 0.5:
             gender = "Female"
+            with open("poznamky.txt", "a") as file:
+                file.write(f"It was a female({str(female_probability)}) and ")
+
         else:
             gender = "Male"
+            with open("poznamky.txt", "a") as file:
+                file.write(f"It was a male and ")            
 
         if old_probability > 0.5:
             age = "Young"
+            current_datetime = datetime.datetime.now()
+            with open("poznamky.txt", "a") as file:
+                file.write(f"its young | date:{current_datetime}\n")            
         else:
-            age = "Old"        
+            age = "Old"
+            current_datetime = datetime.datetime.now()
+            with open("poznamky.txt", "a") as file:
+                file.write(f"its old | date:{current_datetime}\n")                
+
+
 
 
         cv2.putText(frame, f'Gender: {gender}', (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
