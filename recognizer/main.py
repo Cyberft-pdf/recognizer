@@ -1,8 +1,11 @@
 import tensorflow as tf
 import cv2
 import numpy as np
-import datetime
+import json
+from datetime import datetime
 
+
+data_list = []
 model_gender = tf.keras.models.load_model("model2.h5")  
 model_age =tf.keras.models.load_model("model3.h5")
 
@@ -18,13 +21,12 @@ while True:
     faces = face_cascade.detectMultiScale(frame, scaleFactor=1.1, minNeighbors=5, minSize=(30, 30))
 
     for (x, y, w, h) in faces:
-        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
 
+        cv2.rectangle(frame, (x, y), (x+w, y+h), (0, 255, 0), 2)
         face = frame[y:y+h, x:x+w]
         face = cv2.resize(face, (200, 200))
         face = face / 255.0
         face = np.expand_dims(face, axis=0)
-
 
 
         predictions_gender = model_gender.predict(face)
@@ -39,35 +41,37 @@ while True:
 
         if female_probability > 0.5:
             gender = "Female"
-            with open("poznamky.txt", "a") as file:
-                file.write(f"It was a female({str(female_probability)}) and ")
 
         else:
             gender = "Male"
-            with open("poznamky.txt", "a") as file:
-                file.write(f"It was a male and ")            
 
         if old_probability > 0.5:
-            age = "Young"
-            current_datetime = datetime.datetime.now()
-            with open("poznamky.txt", "a") as file:
-                file.write(f"its young | date:{current_datetime}\n")            
+            age = "Young"                 
+        
         else:
             age = "Old"
-            current_datetime = datetime.datetime.now()
-            with open("poznamky.txt", "a") as file:
-                file.write(f"its old | date:{current_datetime}\n")                
 
+        data_list.append({
+                          "gender": gender, 
+                          "age": age,
+                          "date/time": datetime.now().isoformat(),                          
+                          })
 
 
 
         cv2.putText(frame, f'Gender: {gender}', (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
         cv2.putText(frame, f"Age: {age}", (x, y-30), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
 
+
     cv2.imshow('Live Detekce a Rozpoznávání Pohlaví', frame)
 
+
     if cv2.waitKey(1) & 0xFF == ord('q'):
+        with open("data.json", "a") as json_file:
+            json.dump(data_list, json_file, indent=4)
+            json_file.write("\n")
         break
+
 
 cap.release()
 cv2.destroyAllWindows()
