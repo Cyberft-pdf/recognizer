@@ -43,7 +43,7 @@ start_button_rect2 = exit_img.get_rect()
 #velikost tlačítka - konec
 
 
-#když tak pro napsání textu / nepoužito
+#když tak pro napsání textu / nevyužito
 def draw_text(text, font, text_col, x, y,):
   img = font.render(text, True, text_col)
   WIN.blit(img, (x, y))
