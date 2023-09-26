@@ -59,14 +59,14 @@ while True:
 
 
 
-        cv2.putText(frame, f'Gender: {gender}', (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
+        cv2.putText(frame, f"Gender: {gender}", (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
         cv2.putText(frame, f"Age: {age}", (x, y-30), cv2.FONT_HERSHEY_SIMPLEX, 0.9, (0, 255, 0), 2)
 
 
-    cv2.imshow('Live Detekce a Rozpoznávání Pohlaví', frame)
+    cv2.imshow("Live Detekce a Rozpoznávání Pohlaví", frame)
 
 
-    if cv2.waitKey(1) & 0xFF == ord('q'):
+    if cv2.waitKey(1) & 0xFF == ord("q"):
         with open("data.json", "a") as json_file:
             json.dump(data_list, json_file, indent=4)
             json_file.write("\n")
