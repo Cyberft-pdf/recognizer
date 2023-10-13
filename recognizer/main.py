@@ -7,6 +7,10 @@ import pygame
 import sys
 import subprocess
 import platform
+import pywifi
+from pywifi import const
+
+
 
 
 pygame.init()
@@ -164,6 +168,29 @@ def my_network_information():
     except subprocess.CalledProcessError as e:
         print(f"Chyba při spuštění příkazu: {e}")
 
+#NENÍ ZPOVOZNĚNO 
+def wifi_okolí():
+
+    wifi = pywifi.PyWiFi()
+    iface = wifi.interfaces()[0]  
+
+    iface.scan() 
+    iface.scan_results()
+
+    scan_results = iface.scan_results()
+    print("-------------------------------------")
+    print(" ")
+    for result in scan_results:
+        ssid = result.ssid
+        signal_strength = result.signal
+        print(f"SSID: {ssid}, Signál: {signal_strength} dBm")
+        print(" ") 
+        print("-------------------------------------")   
+#NENÍ ZPOVOZNĚNO 
+
+
+
+
 
 
 
@@ -200,8 +227,8 @@ while running:
             pygame.quit()  
             my_network_information()
 
+  
 
-    
 
     pygame.display.flip()
 
