@@ -169,7 +169,7 @@ def my_network_information():
         print(f"Chyba při spuštění příkazu: {e}")
 
 #NENÍ ZPOVOZNĚNO 
-def wifi_okolí():
+def wifi_okoli():
 
     wifi = pywifi.PyWiFi()
     iface = wifi.interfaces()[0]  
@@ -187,11 +187,6 @@ def wifi_okolí():
         print(" ") 
         print("-------------------------------------")   
 #NENÍ ZPOVOZNĚNO 
-
-
-
-
-
 
 
 #hlavní while loop
@@ -227,7 +222,12 @@ while running:
             pygame.quit()  
             my_network_information()
 
-  
+        elif button_rect2.collidepoint(mouse_pos) and mouse_pressed[0]:
+            pygame.quit()  
+            my_network_information()
+    
+
+
 
 
     pygame.display.flip()
