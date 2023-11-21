@@ -9,7 +9,8 @@ import subprocess
 import platform
 import pywifi
 from pywifi import const
-
+import random 
+import string 
 
 
 
