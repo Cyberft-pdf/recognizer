@@ -38,6 +38,8 @@ button_img_net = pygame.image.load("pictures/button_net.png").convert_alpha()
 button_image_tr2 = pygame.transform.scale(backround_image, (1200, 800))
 button_image_tr1 = pygame.transform.scale(start_img, (220, 145))
 button_image_tr3 = pygame.transform.scale(button_img_net, (220, 145))
+button_image_tr4 = pygame.transform.scale(button_img_net, (220, 145))
+
 #obrázky - konec
 
 #velikost tlačítka - začátek
@@ -52,12 +54,22 @@ button_y = (button_height2) // 1
 button_x2 =  400
 button_y2 =  590
 
+button_x3 =  658
+button_y3 =  590
+
+button_x4 =  900
+button_y4 =  590
+
 button_rect = pygame.Rect(button_x, button_y, button_width, button_height)
 button_rect2 = pygame.Rect(button_x2, button_y2, button_width, button_height)
+button_rect3 = pygame.Rect(button_x3, button_y3, button_width, button_height)
+button_rect4 = pygame.Rect(button_x4, button_y4, button_width, button_height)
 
 
 start_button_rect = button_img_net.get_rect()
 start_button_rect2 = button_img_net.get_rect()
+start_button_rect3 = button_img_net.get_rect()
+
 #velikost tlačítka - konec
 
 
@@ -151,9 +163,6 @@ def my_network_information():
     command = f"color 2 & {command}"
 
     subprocess.Popen(["start", "cmd", "/k", command], shell=True)
-
-
-
     try:
         result = subprocess.run(command, shell=True, check=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
         
@@ -169,9 +178,8 @@ def my_network_information():
     except subprocess.CalledProcessError as e:
         print(f"Chyba při spuštění příkazu: {e}")
 
-#NENÍ ZPOVOZNĚNO 
-def wifi_okoli():
 
+def wifi_okoli():
     wifi = pywifi.PyWiFi()
     iface = wifi.interfaces()[0]  
 
@@ -187,30 +195,31 @@ def wifi_okoli():
         print(f"SSID: {ssid}, Signál: {signal_strength} dBm")
         print(" ") 
         print("-------------------------------------")   
-#NENÍ ZPOVOZNĚNO 
 
-#NENÍ ZPOVOZNĚNO 
+
 
 def gen_pasword():
     site = input("What website or app:")
-    
+    email = input("What is the email/username:")
+
     def generate_password(length=12):
         characters = string.ascii_letters + string.digits + string.punctuation
         password = "".join(random.choice(characters) for i in range(length))
         return password
-    
+
     generate_password = generate_password()
-    
-    with open("data.txt", "a") as f:
-        data = site , generate_password
+
+    with open("password_manager.txt", "a") as f:
+        data = site, email, generate_password
         f.write( "\n")
         f.write(str(data))
         f.write("\n")
-    
-    
-    print(f"New password is: {generate_password}")
 
-#NENÍ ZPOVOZNĚNO 
+
+    print(f"New password is: {generate_password}")
+    
+    
+
 
 #hlavní while loop
 show_intro = True
@@ -235,6 +244,9 @@ while running:
         WIN.blit(button_image_tr2, (0, 0))
         WIN.blit(button_image_tr3, button_rect2,)                    
         WIN.blit(button_image_tr1, button_rect,)
+        WIN.blit(button_image_tr4, button_rect3,)
+        WIN.blit(button_image_tr4, button_rect4,)
+
         mouse_pos = pygame.mouse.get_pos()
         mouse_pressed = pygame.mouse.get_pressed()
         if button_rect.collidepoint(mouse_pos) and mouse_pressed[0]:
@@ -249,7 +261,13 @@ while running:
             pygame.quit()  
             my_network_information()
     
+        elif button_rect3.collidepoint(mouse_pos) and mouse_pressed[0]:
+            pygame.quit()  
+            wifi_okoli()
 
+        elif button_rect4.collidepoint(mouse_pos) and mouse_pressed[0]:
+            pygame.quit()  
+            gen_pasword()
 
 
 
