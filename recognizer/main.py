@@ -11,6 +11,7 @@ import pywifi
 from pywifi import const
 import random 
 import string 
+import hashlib
 
 
 
@@ -35,10 +36,18 @@ clock = pygame.time.Clock()
 backround_image = pygame.image.load("pictures/backround_image.png").convert_alpha()
 start_img = pygame.image.load("pictures/start_button_face.png").convert_alpha()
 button_img_net = pygame.image.load("pictures/button_net.png").convert_alpha()
+button_img_pass = pygame.image.load("pictures/pixil-frame-0 (12).png").convert_alpha()
+button_img_wifi = pygame.image.load("pictures/pixil-frame-0 (15).png").convert_alpha()
+button_img_hash = pygame.image.load("pictures/pixil-frame-0 (17).png").convert_alpha()
+
+
 button_image_tr2 = pygame.transform.scale(backround_image, (1200, 800))
 button_image_tr1 = pygame.transform.scale(start_img, (220, 145))
 button_image_tr3 = pygame.transform.scale(button_img_net, (220, 145))
-button_image_tr4 = pygame.transform.scale(button_img_net, (220, 145))
+button_image_tr4 = pygame.transform.scale(button_img_pass, (220, 145))
+button_image_tr5 = pygame.transform.scale(button_img_wifi, (220, 145))
+button_image_tr6 = pygame.transform.scale(button_img_hash, (220, 145))
+
 
 #obrázky - konec
 
@@ -60,10 +69,18 @@ button_y3 =  590
 button_x4 =  900
 button_y4 =  590
 
+button_x5 =  950
+button_y5 =  590
+
+button_x6 =  930
+button_y6 =  420
+
 button_rect = pygame.Rect(button_x, button_y, button_width, button_height)
 button_rect2 = pygame.Rect(button_x2, button_y2, button_width, button_height)
 button_rect3 = pygame.Rect(button_x3, button_y3, button_width, button_height)
 button_rect4 = pygame.Rect(button_x4, button_y4, button_width, button_height)
+button_rect5 = pygame.Rect(button_x5, button_y5, button_width, button_height)
+button_rect6 = pygame.Rect(button_x6, button_y6, button_width, button_height)
 
 
 start_button_rect = button_img_net.get_rect()
@@ -159,7 +176,7 @@ def recognizer():
 
 
 def my_network_information():
-    command = "'color 2 & ipconfig /all" 
+    command = "color 2 & ipconfig /all" 
     command = f"color 2 & {command}"
 
     subprocess.Popen(["start", "cmd", "/k", command], shell=True)
@@ -219,6 +236,43 @@ def gen_pasword():
     print(f"New password is: {generate_password}")
     
     
+def hash():
+    # A string that has been stored as a byte stream
+    # (due to the prefix b)
+    string = input("Enter string you want to hash: ")
+    binary_string = string.encode('utf-8')
+
+    # Initializing the sha256() method
+    sha256 = hashlib.sha256()
+
+    # Passing the byte stream as an argument
+    sha256.update(binary_string)
+
+    # sha256.hexdigest() hashes all the input data
+    # passed to the sha256() via sha256.update()
+    # Acts as a finalize method, after which all
+    # the input data gets hashed
+    # hexdigest() hashes the data, and returns
+    # the output in hexadecimal format
+    string_hash = sha256.hexdigest()
+
+
+    print(f"Hash:{string_hash}")
+
+    otazka = input("Do you want to store the hash? y/n")
+
+    if otazka == "y":
+        print("done")
+        with open("hash.txt", "a") as f:
+            data = string, string_hash
+            f.write( "\n")
+            f.write(str(data))
+            f.write("\n")
+    elif otazka == "n":
+        print("then remeber it!")
+
+    else:
+        print("Bad choice :( ")
 
 
 #hlavní while loop
@@ -241,11 +295,14 @@ while running:
                 show_intro = False
 
     else:
-        WIN.blit(button_image_tr2, (0, 0))
+        WIN.blit(button_image_tr2, (0, 0))   
+        WIN.blit(button_image_tr1, button_rect,)
         WIN.blit(button_image_tr3, button_rect2,)                    
         WIN.blit(button_image_tr1, button_rect,)
-        WIN.blit(button_image_tr4, button_rect3,)
-        WIN.blit(button_image_tr4, button_rect4,)
+        WIN.blit(button_image_tr5, button_rect3,)
+        WIN.blit(button_image_tr4, button_rect5,)
+        WIN.blit(button_image_tr6, button_rect6,)
+        
 
         mouse_pos = pygame.mouse.get_pos()
         mouse_pressed = pygame.mouse.get_pressed()
@@ -257,19 +314,17 @@ while running:
             pygame.quit()  
             my_network_information()
 
-        elif button_rect2.collidepoint(mouse_pos) and mouse_pressed[0]:
-            pygame.quit()  
-            my_network_information()
-    
         elif button_rect3.collidepoint(mouse_pos) and mouse_pressed[0]:
             pygame.quit()  
-            wifi_okoli()
+            wifi_okoli()            
 
-        elif button_rect4.collidepoint(mouse_pos) and mouse_pressed[0]:
+        elif button_rect5.collidepoint(mouse_pos) and mouse_pressed[0]:
             pygame.quit()  
             gen_pasword()
 
-
+        elif button_rect6.collidepoint(mouse_pos) and mouse_pressed[0]:
+            pygame.quit()  
+            hash()
 
     pygame.display.flip()
 
