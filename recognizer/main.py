@@ -106,8 +106,6 @@ def recognizer():
 
     face_cascade = cv2.CascadeClassifier(cv2.data.haarcascades + "haarcascade_frontalface_default.xml")
 
-
-
     while True:
         ret, frame = cap.read()  
 
@@ -121,19 +119,14 @@ def recognizer():
             face = face / 255.0
             face = np.expand_dims(face, axis=0)
 
-
             predictions_gender = model_gender.predict(face)
             predictions_age = model_age.predict(face)
 
             gender_label = np.argmax(predictions_gender, axis=0 )[0]
 
-
-
             #díky tomuto to funguje 
             female_probability = predictions_gender[0][0]
             old_probability = predictions_age[0][0]
-
-
 
             if female_probability > 0.5:
                 gender = "Female"
@@ -171,9 +164,6 @@ def recognizer():
 
     cap.release()
     cv2.destroyAllWindows()
-
-
-
 
 def my_network_information():
     command = "color 2 & ipconfig /all" 
@@ -213,8 +203,6 @@ def wifi_okoli():
         print(" ") 
         print("-------------------------------------")   
 
-
-
 def gen_pasword():
     site = input("What website or app:")
     email = input("What is the email/username:")
@@ -234,7 +222,6 @@ def gen_pasword():
 
 
     print(f"New password is: {generate_password}")
-    
     
 def hash():
     # A string that has been stored as a byte stream
