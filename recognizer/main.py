@@ -15,8 +15,9 @@ import hashlib
 
 
 
+
 pygame.init()
-#Základní nastavení - začátek
+#Základní nastavení-začátek
 WIDTH, HEIGHT = 1200,800
 WIN = pygame.display.set_mode((WIDTH,HEIGHT))
 pygame.display.set_caption("Recognizer")
